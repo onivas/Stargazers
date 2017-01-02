@@ -15,16 +15,15 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-/**
- * Created by savino on 30/12/16.
- */
 
 public class ListingRepoPresenter implements Contract.Presenter {
 
     ListingRepoFragment mView;
     private Retrofit mRetrofit;
 
-    public ListingRepoPresenter(ListingRepoFragment view) {
+    public ListingRepoPresenter() {}
+
+    public void setView(ListingRepoFragment view) {
         mView = view;
     }
 

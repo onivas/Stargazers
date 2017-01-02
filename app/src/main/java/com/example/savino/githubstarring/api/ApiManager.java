@@ -8,9 +8,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import rx.Observable;
 
-/**
- * Created by savino on 29/12/16.
- */
 
 public interface ApiManager {
 

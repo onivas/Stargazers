@@ -1,6 +1,5 @@
 package com.example.savino.githubstarring.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +13,9 @@ import com.example.savino.githubstarring.MainActivity;
 import com.example.savino.githubstarring.R;
 import com.example.savino.githubstarring.adapter.Adapter;
 import com.example.savino.githubstarring.databinding.FragmentListingRepoBinding;
+import com.example.savino.githubstarring.di.component.DaggerListingRepoPresenterComponent;
+import com.example.savino.githubstarring.di.component.ListingRepoPresenterComponent;
+import com.example.savino.githubstarring.di.module.ListingRepoPresenterModule;
 import com.example.savino.githubstarring.model.Stargazers;
 import com.example.savino.githubstarring.mvp.Contract;
 
@@ -30,6 +32,19 @@ public class ListingRepoFragment extends Fragment implements Contract.View,
     public static ListingRepoFragment newInstance() {
         ListingRepoFragment fragment = new ListingRepoFragment();
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ListingRepoPresenterComponent component = DaggerListingRepoPresenterComponent.builder()
+                .listingRepoPresenterModule(new ListingRepoPresenterModule())
+                .build();
+
+        mPresenter = component.provideListingRepoPresenter();
+        mPresenter.setView(this);
+        mPresenter.start();
     }
 
     @Nullable
@@ -50,16 +65,9 @@ public class ListingRepoFragment extends Fragment implements Contract.View,
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        mPresenter =  new ListingRepoPresenter(this);
-        mPresenter.start();
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroy() {
         mPresenter.stop();
+        super.onDestroy();
     }
 
     @Override
