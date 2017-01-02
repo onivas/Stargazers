@@ -1,37 +1,24 @@
 package com.example.savino.githubstarring.adapter;
 
-import android.app.Activity;
-import android.graphics.Bitmap;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.example.savino.githubstarring.R;
+import com.example.savino.githubstarring.databinding.LayoutRecyclerViewBinding;
 import com.example.savino.githubstarring.model.Stargazers;
 
 import java.util.ArrayList;
 
-/**
- * Created by savino on 30/12/16.
- */
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     private ArrayList<Stargazers> mData;
-    private Activity mActivity;
 
-    public Adapter(ArrayList<Stargazers> data, FragmentActivity activity) {
+    public Adapter(ArrayList<Stargazers> data) {
         mData = data;
-        mActivity = activity;
     }
 
     @Override
@@ -45,20 +32,11 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mLogin.setText(mData.get(position).getLogin());
-        Glide.with(mActivity)
-                .load(mData.get(position).getAvatar())
-                .asBitmap()
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(new BitmapImageViewTarget(holder.mAvatar) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        super.setResource(resource);
-                        RoundedBitmapDrawable drawable = RoundedBitmapDrawableFactory.create(mActivity.getResources(), resource);
-                        drawable.setCircular(true);
-                        holder.mAvatar.setImageDrawable(drawable);
-                    }
-                });
+        Stargazers user = mData.get(position);
+
+        final LayoutRecyclerViewBinding holderBinding = holder.getBinding();
+        holderBinding.setUser(user);
+        holderBinding.executePendingBindings();  // executePendingBindings to make binding happen immediately
     }
 
     @Override
@@ -68,13 +46,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView mLogin;
-        public ImageView mAvatar;
+        private LayoutRecyclerViewBinding mBinding;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            mLogin = (TextView) itemView.findViewById(R.id.login);
-            mAvatar = (ImageView) itemView.findViewById(R.id.avatar);
+            mBinding = DataBindingUtil.bind(itemView);
+        }
+
+        public LayoutRecyclerViewBinding getBinding() {
+            return mBinding;
         }
     }
 }

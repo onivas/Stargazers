@@ -1,12 +1,12 @@
 package com.example.savino.githubstarring.model;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by savino on 29/12/16.
- */
 
-public class Stargazers {
+public class Stargazers extends BaseObservable{
 
     @SerializedName("id")
     String mId;
@@ -23,10 +23,12 @@ public class Stargazers {
         mAvatar = avatar;
     }
 
+    @Bindable
     public String getId() {
         return mId;
     }
 
+    @Bindable
     public String getLogin() {
         return mLogin;
     }
