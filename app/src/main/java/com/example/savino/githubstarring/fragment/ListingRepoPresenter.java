@@ -2,15 +2,12 @@ package com.example.savino.githubstarring.fragment;
 
 import android.util.Log;
 
-import com.example.savino.githubstarring.api.ApiManager;
+import com.example.savino.githubstarring.api.Manager;
 import com.example.savino.githubstarring.model.Stargazers;
 import com.example.savino.githubstarring.mvp.Contract;
 
 import java.util.ArrayList;
 
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
@@ -19,7 +16,7 @@ import rx.schedulers.Schedulers;
 public class ListingRepoPresenter implements Contract.Presenter {
 
     ListingRepoFragment mView;
-    private Retrofit mRetrofit;
+    private Manager mManager;
 
     public ListingRepoPresenter() {}
 
@@ -29,7 +26,7 @@ public class ListingRepoPresenter implements Contract.Presenter {
 
     @Override
     public void start() {
-
+        mManager =  new Manager();
     }
 
     @Override
@@ -40,7 +37,7 @@ public class ListingRepoPresenter implements Contract.Presenter {
     @Override
     public boolean manageCall(String owner, String repo) {
 
-        apiManager().listRepository(owner, repo)
+        mManager.listRepository(owner, repo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<ArrayList<Stargazers>>() {
@@ -67,15 +64,4 @@ public class ListingRepoPresenter implements Contract.Presenter {
         mView.showErrorPage(message);
     }
 
-    private ApiManager apiManager() {
-        if (mRetrofit == null) {
-            mRetrofit = new Retrofit.Builder()
-                    .baseUrl("https://api.github.com")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                    .build();
-        }
-
-        return mRetrofit.create(ApiManager.class);
-    }
 }
