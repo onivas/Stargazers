@@ -3,6 +3,9 @@ package com.example.savino.githubstarring.fragment;
 import android.util.Log;
 
 import com.example.savino.githubstarring.api.Manager;
+import com.example.savino.githubstarring.di.component.DaggerListingRepoPresenterComponent;
+import com.example.savino.githubstarring.di.component.ListingRepoPresenterComponent;
+import com.example.savino.githubstarring.di.module.ApiModule;
 import com.example.savino.githubstarring.model.Stargazers;
 import com.example.savino.githubstarring.mvp.Contract;
 
@@ -26,7 +29,10 @@ public class ListingRepoPresenter implements Contract.Presenter {
 
     @Override
     public void start() {
-        mManager =  new Manager();
+        ListingRepoPresenterComponent component = DaggerListingRepoPresenterComponent.builder()
+                .apiModule(new ApiModule())
+                .build();
+        mManager =  component.provideManager();
     }
 
     @Override
