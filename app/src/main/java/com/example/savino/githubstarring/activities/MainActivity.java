@@ -1,4 +1,4 @@
-package com.example.savino.githubstarring;
+package com.example.savino.githubstarring.activities;
 
 import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.example.savino.githubstarring.R;
 import com.example.savino.githubstarring.databinding.ActivityMainBinding;
 import com.example.savino.githubstarring.databinding.DialogBinding;
 import com.example.savino.githubstarring.fragment.ListingRepoFragment;
