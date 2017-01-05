@@ -10,7 +10,7 @@ import dagger.Provides;
 public class ApiModule {
 
     @Provides
-    Manager provideManager() {
+    public Manager provideManager() {
         return new Manager();
     }
 }

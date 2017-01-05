@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.savino.githubstarring.MainActivity;
+import com.example.savino.githubstarring.activities.MainActivity;
 import com.example.savino.githubstarring.R;
 import com.example.savino.githubstarring.adapter.Adapter;
 import com.example.savino.githubstarring.databinding.FragmentListingRepoBinding;
