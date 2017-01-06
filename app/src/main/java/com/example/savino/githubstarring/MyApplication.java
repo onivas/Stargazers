@@ -32,6 +32,7 @@ public class MyApplication extends Application {
             return mListingRepoPresenterComponent;
         }
 
-        return createListingRepoComponent();
+        mListingRepoPresenterComponent = createListingRepoComponent();
+        return mListingRepoPresenterComponent;
     }
 }

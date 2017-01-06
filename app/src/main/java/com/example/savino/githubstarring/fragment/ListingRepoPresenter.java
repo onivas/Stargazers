@@ -3,7 +3,7 @@ package com.example.savino.githubstarring.fragment;
 import android.util.Log;
 
 import com.example.savino.githubstarring.MyApplication;
-import com.example.savino.githubstarring.api.Manager;
+import com.example.savino.githubstarring.api.ApiManager;
 import com.example.savino.githubstarring.di.component.ListingRepoPresenterComponent;
 import com.example.savino.githubstarring.model.Stargazers;
 import com.example.savino.githubstarring.mvp.Contract;
@@ -18,7 +18,7 @@ import rx.schedulers.Schedulers;
 public class ListingRepoPresenter implements Contract.Presenter {
 
     ListingRepoFragment mView;
-    private Manager mManager;
+    private ApiManager mManager;
 
     public ListingRepoPresenter() {}
 
@@ -28,8 +28,7 @@ public class ListingRepoPresenter implements Contract.Presenter {
 
     @Override
     public void start() {
-        ListingRepoPresenterComponent component = ((MyApplication) mView.getActivity()
-                .getApplication())
+        ListingRepoPresenterComponent component = ((MyApplication) mView.getActivity().getApplication())
                 .getListingRepoPresenterComponent();
 
         mManager = component.provideManager();

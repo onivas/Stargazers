@@ -1,5 +1,6 @@
 package com.example.savino.githubstarring.di.module;
 
+import com.example.savino.githubstarring.api.ApiManager;
 import com.example.savino.githubstarring.api.Manager;
 
 import dagger.Module;
@@ -10,7 +11,7 @@ import dagger.Provides;
 public class ApiModule {
 
     @Provides
-    public Manager provideManager() {
+    public ApiManager provideManager() {
         return new Manager();
     }
 }
