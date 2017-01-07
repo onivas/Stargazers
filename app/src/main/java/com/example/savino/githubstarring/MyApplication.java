@@ -14,13 +14,15 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        mListingRepoPresenterComponent = createListingRepoComponent();
+        createListingRepoComponent();
     }
 
     private ListingRepoPresenterComponent createListingRepoComponent() {
-        return DaggerListingRepoPresenterComponent.builder()
+        mListingRepoPresenterComponent = DaggerListingRepoPresenterComponent.builder()
                 .apiModule(new ApiModule())
                 .build();
+
+        return mListingRepoPresenterComponent;
     }
 
     public void setListingRepoPresenterComponent(ListingRepoPresenterComponent component) {
@@ -32,7 +34,6 @@ public class MyApplication extends Application {
             return mListingRepoPresenterComponent;
         }
 
-        mListingRepoPresenterComponent = createListingRepoComponent();
-        return mListingRepoPresenterComponent;
+        return createListingRepoComponent();
     }
 }
