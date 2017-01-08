@@ -1,5 +1,6 @@
 package com.example.savino.githubstarring.api;
 
+import com.example.savino.githubstarring.model.Repos;
 import com.example.savino.githubstarring.model.Stargazers;
 
 import java.util.ArrayList;
@@ -13,4 +14,7 @@ public interface ApiManager {
 
     @GET("/repos/{owner}/{repo}/stargazers")
     Observable<ArrayList<Stargazers>> listRepository(@Path("owner") String owner, @Path("repo") String repo);
+
+    @GET("/users/{owner}/repos")
+    Observable<ArrayList<Repos>> userRepos(@Path("owner") String owner);
 }
