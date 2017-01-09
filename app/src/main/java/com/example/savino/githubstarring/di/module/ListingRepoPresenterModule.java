@@ -1,7 +1,7 @@
 package com.example.savino.githubstarring.di.module;
 
 
-import com.example.savino.githubstarring.fragment.ListingRepoPresenter;
+import com.example.savino.githubstarring.Presenter.ListingRepoPresenter;
 
 import dagger.Module;
 import dagger.Provides;
