@@ -4,30 +4,21 @@ import com.example.savino.githubstarring.model.Stargazers;
 
 import java.util.ArrayList;
 
-/**
- * Created by savino on 30/12/16.
- */
+import rx.Observable;
 
-public class Contract {
+public class ContractListing {
 
-    public interface View {
+    public interface View extends BaseView{
 
         void populateResult(ArrayList<Stargazers> stargazerses);
-
-        void showResults();
-
-        void showErrorPage(String message);
 
         void showEmptyPage();
     }
 
-    public interface Presenter {
-
-        void start();
-
-        void stop();
+    public interface Presenter extends BasePresenter{
 
         boolean manageCall(String owner, String repo);
 
+        void openOwnerRepo(Observable<String> observable);
     }
 }
