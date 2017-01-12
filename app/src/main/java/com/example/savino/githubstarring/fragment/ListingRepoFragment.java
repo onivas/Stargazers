@@ -9,20 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.savino.githubstarring.activities.MainActivity;
+import com.example.savino.githubstarring.Presenter.ListingRepoPresenter;
 import com.example.savino.githubstarring.R;
+import com.example.savino.githubstarring.activities.MainActivity;
 import com.example.savino.githubstarring.adapter.Adapter;
 import com.example.savino.githubstarring.databinding.FragmentListingRepoBinding;
 import com.example.savino.githubstarring.di.component.DaggerListingRepoPresenterComponent;
 import com.example.savino.githubstarring.di.component.ListingRepoPresenterComponent;
 import com.example.savino.githubstarring.di.module.ListingRepoPresenterModule;
 import com.example.savino.githubstarring.model.Stargazers;
-import com.example.savino.githubstarring.mvp.Contract;
+import com.example.savino.githubstarring.mvp.ContractListing;
 
 import java.util.ArrayList;
 
 
-public class ListingRepoFragment extends Fragment implements Contract.View,
+public class ListingRepoFragment extends Fragment implements ContractListing.View,
         MainActivity.onDialogFilledListener {
 
     ListingRepoPresenter mPresenter;
@@ -73,6 +74,7 @@ public class ListingRepoFragment extends Fragment implements Contract.View,
     @Override
     public void populateResult(ArrayList<Stargazers> stargazerses) {
         Adapter adapter = new Adapter(stargazerses);
+        mPresenter.openOwnerRepo(adapter.getPositionClicks());
         mRecyclerView.swapAdapter(adapter, false);
         showResults();
     }

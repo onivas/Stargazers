@@ -38,7 +38,7 @@ public class Repos {
         return mDescription;
     }
 
-    public int getMforks() {
+    public int getForks() {
         return mForks;
     }
 

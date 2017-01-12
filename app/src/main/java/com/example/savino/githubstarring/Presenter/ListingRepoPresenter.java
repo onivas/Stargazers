@@ -9,7 +9,7 @@ import com.example.savino.githubstarring.api.ApiManager;
 import com.example.savino.githubstarring.di.component.ListingRepoPresenterComponent;
 import com.example.savino.githubstarring.fragment.ListingRepoFragment;
 import com.example.savino.githubstarring.model.Stargazers;
-import com.example.savino.githubstarring.mvp.Contract;
+import com.example.savino.githubstarring.mvp.ContractListing;
 
 import java.util.ArrayList;
 
@@ -21,7 +21,7 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
 
-public class ListingRepoPresenter implements Contract.Presenter {
+public class ListingRepoPresenter implements ContractListing.Presenter {
 
     ListingRepoFragment mView;
     private ApiManager mManager;

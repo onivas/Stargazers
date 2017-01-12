@@ -12,8 +12,13 @@ import com.example.savino.githubstarring.model.Stargazers;
 
 import java.util.ArrayList;
 
+import rx.Observable;
+import rx.subjects.PublishSubject;
+
 
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+
+    private final PublishSubject<String> onClickSubject = PublishSubject.create();
 
     private ArrayList<Stargazers> mData;
 
@@ -32,9 +37,16 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Stargazers user = mData.get(position);
+        final Stargazers user = mData.get(position);
 
         final LayoutRecyclerViewBinding holderBinding = holder.getBinding();
+
+        holderBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickSubject.onNext(user.getLogin());
+            }
+        });
         holderBinding.setUser(user);
         holderBinding.executePendingBindings();  // executePendingBindings to make binding happen immediately
     }
@@ -56,5 +68,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         public LayoutRecyclerViewBinding getBinding() {
             return mBinding;
         }
+    }
+
+    public Observable<String> getPositionClicks() {
+        return onClickSubject.asObservable();
     }
 }

@@ -13,6 +13,8 @@ public class ContractListing {
         void populateResult(ArrayList<Stargazers> stargazerses);
 
         void showEmptyPage();
+
+        void showResults();
     }
 
     public interface Presenter extends BasePresenter{
