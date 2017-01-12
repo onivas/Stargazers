@@ -29,6 +29,7 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
     ListingRepoPresenter mPresenter;
     private RecyclerView mRecyclerView;
     private FragmentListingRepoBinding mBinding;
+    private MainActivity mActivity;
 
     public static ListingRepoFragment newInstance() {
         ListingRepoFragment fragment = new ListingRepoFragment();
@@ -51,18 +52,25 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        MainActivity activity = (MainActivity) getActivity();
-        activity.setListener(this);
+
+        mActivity = (MainActivity) getActivity();
 
         View view = inflater.inflate(R.layout.fragment_listing_repo, container, false);
         mBinding = FragmentListingRepoBinding.bind(view);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(layoutManager);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        mActivity.setListener(this);
     }
 
     @Override
