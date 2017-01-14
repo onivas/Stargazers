@@ -24,12 +24,17 @@ import java.util.ArrayList;
 
 
 public class ListingRepoFragment extends Fragment implements ContractListing.View,
-        MainActivity.onDialogFilledListener {
+        MainActivity.onDialogFilledListener,
+        Adapter.onEndOfThePageListener{
 
     ListingRepoPresenter mPresenter;
     private RecyclerView mRecyclerView;
     private FragmentListingRepoBinding mBinding;
     private MainActivity mActivity;
+    private Adapter mAdapter;
+
+    private String mOwner;
+    private String mRepo;
 
     public static ListingRepoFragment newInstance() {
         ListingRepoFragment fragment = new ListingRepoFragment();
@@ -47,6 +52,9 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
         mPresenter = component.provideListingRepoPresenter();
         mPresenter.setView(this);
         mPresenter.start();
+
+        mAdapter = new Adapter(new ArrayList<Stargazers>(0), this);
+        mPresenter.openOwnerRepo(mAdapter.getPositionClicks());
     }
 
     @Nullable
@@ -81,17 +89,30 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
 
     @Override
     public void populateResult(ArrayList<Stargazers> stargazerses) {
-        Adapter adapter = new Adapter(stargazerses);
-        mPresenter.openOwnerRepo(adapter.getPositionClicks());
-        mRecyclerView.swapAdapter(adapter, false);
+        mAdapter.setData(stargazerses);
+        mRecyclerView.setAdapter(mAdapter);
         showResults();
     }
+
+    @Override
+    public void loadMoreResult(ArrayList<Stargazers> stargazerses) {
+        mAdapter.addMoreData(stargazerses);
+        mRecyclerView.swapAdapter(mAdapter, false);
+        showResults();
+    }
+
+
 
     @Override
     public void showResults() {
         mBinding.error.setVisibility(View.GONE);
         mBinding.empty.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void startScrolling() {
+        mAdapter.startScrolling();
     }
 
     @Override
@@ -112,6 +133,13 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
 
     @Override
     public void onDialogFilled(String owner, String repo) {
-        mPresenter.manageCall(owner, repo);
+        mOwner = owner;
+        mRepo =repo;
+        mPresenter.manageCall(mOwner, mRepo);
+    }
+
+    @Override
+    public void endOfThePageListener(int dataSize) {
+        mPresenter.loadMore(mOwner, mRepo, dataSize);
     }
 }

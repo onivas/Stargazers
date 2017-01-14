@@ -12,9 +12,13 @@ public class ContractListing {
 
         void populateResult(ArrayList<Stargazers> stargazerses);
 
+        void loadMoreResult(ArrayList<Stargazers> stargazerses);
+
         void showEmptyPage();
 
         void showResults();
+
+        void startScrolling();
     }
 
     public interface Presenter extends BasePresenter{
@@ -22,5 +26,7 @@ public class ContractListing {
         boolean manageCall(String owner, String repo);
 
         void openOwnerRepo(Observable<String> observable);
+
+        void loadMore(String owner, String repo, int pageNumber);
     }
 }

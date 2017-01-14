@@ -98,6 +98,29 @@ public class ListingRepoPresenter implements ContractListing.Presenter {
         mSubscription.add(subscribe);
     }
 
+    @Override
+    public void loadMore(String owner, String repo, int pageNumber) {
+        Subscription subscribe = mManager.loadMoreRepositories(owner, repo, pageNumber)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Action1<ArrayList<Stargazers>>() {
+                    @Override
+                    public void call(ArrayList<Stargazers> stargazerses) {
+                        if (!stargazerses.isEmpty()) {
+                            mView.loadMoreResult(stargazerses);
+                        }
+                        mView.startScrolling();
+                    }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+                        Log.e(">>> ERROR loadMore:", throwable.getMessage());
+                    }
+                });
+
+        mSubscription.add(subscribe);
+    }
+
     public void showErrorPage(String message) {
         mView.showErrorPage(message);
     }

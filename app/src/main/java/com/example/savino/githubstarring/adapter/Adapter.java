@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.example.savino.githubstarring.R;
 import com.example.savino.githubstarring.databinding.LayoutRecyclerViewBinding;
+import com.example.savino.githubstarring.fragment.ListingRepoFragment;
 import com.example.savino.githubstarring.model.Stargazers;
 
 import java.util.ArrayList;
@@ -21,9 +22,25 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private final PublishSubject<String> onClickSubject = PublishSubject.create();
 
     private ArrayList<Stargazers> mData;
+    private onEndOfThePageListener mListener;
+    private boolean mIsScrolling = true;
 
-    public Adapter(ArrayList<Stargazers> data) {
+    public Adapter(ArrayList<Stargazers> data, ListingRepoFragment fragment) {
         mData = data;
+        mListener = fragment;
+    }
+
+    public void setData(ArrayList<Stargazers> data) {
+        mData = data;
+    }
+
+    // load more
+    public void addMoreData(ArrayList<Stargazers> data) {
+        mData.addAll(data);
+    }
+
+    public void startScrolling() {
+        mIsScrolling = true;
     }
 
     @Override
@@ -49,6 +66,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         });
         holderBinding.setUser(user);
         holderBinding.executePendingBindings();  // executePendingBindings to make binding happen immediately
+
+        if (mIsScrolling && (position >= getItemCount() - 5)) {
+            int needSecondPage = getItemCount() / 30;
+            if (needSecondPage != 0) {
+                mIsScrolling = false;
+                int pageToLoad = needSecondPage + 1;
+                mListener.endOfThePageListener(pageToLoad);
+            }
+        }
     }
 
     @Override
@@ -72,5 +98,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     public Observable<String> getPositionClicks() {
         return onClickSubject.asObservable();
+    }
+
+    public interface onEndOfThePageListener {
+        void endOfThePageListener(int dataSize);
     }
 }
