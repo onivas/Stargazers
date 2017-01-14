@@ -2,9 +2,19 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
+        android:background="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:orientation="vertical">
+
+        <TextView
+            android:text="Fill both fields"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -15,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint="Owner"
-                android:textColor="@color/colorAccent"/>
+                android:textColor="@android:color/black"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -28,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint="Repo name"
-                android:textColor="@color/colorAccent"/>
+                android:textColor="@android:color/black"/>
         </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
