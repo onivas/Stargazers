@@ -52,6 +52,7 @@ public class ListingRepoPresenter implements ContractListing.Presenter {
     @Override
     public boolean manageCall(String owner, String repo) {
 
+        mView.showLoader();
         Subscription subscribe = mManager.listRepository(owner, repo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -100,6 +101,9 @@ public class ListingRepoPresenter implements ContractListing.Presenter {
 
     @Override
     public void loadMore(String owner, String repo, int pageNumber) {
+
+        mView.showLoader();
+
         Subscription subscribe = mManager.loadMoreRepositories(owner, repo, pageNumber)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())

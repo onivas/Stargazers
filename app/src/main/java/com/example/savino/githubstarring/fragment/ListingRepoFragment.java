@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
 
 import com.example.savino.githubstarring.Presenter.ListingRepoPresenter;
 import com.example.savino.githubstarring.R;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 
 public class ListingRepoFragment extends Fragment implements ContractListing.View,
         MainActivity.onDialogFilledListener,
-        Adapter.onEndOfThePageListener{
+        Adapter.onEndOfThePageListener {
 
     ListingRepoPresenter mPresenter;
     private RecyclerView mRecyclerView;
@@ -35,6 +36,7 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
 
     private String mOwner;
     private String mRepo;
+    private ViewPropertyAnimator mLoaderAnimator;
 
     public static ListingRepoFragment newInstance() {
         ListingRepoFragment fragment = new ListingRepoFragment();
@@ -71,6 +73,10 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mActivity);
         mRecyclerView.setLayoutManager(layoutManager);
 
+        mLoaderAnimator = mBinding.loader.animate()
+                .rotation(1.0f)
+                .setDuration(500);
+
         return view;
     }
 
@@ -102,17 +108,30 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
     }
 
 
-
     @Override
     public void showResults() {
         mBinding.error.setVisibility(View.GONE);
         mBinding.empty.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
+
+        hideLoader();
     }
 
     @Override
     public void startScrolling() {
         mAdapter.startScrolling();
+    }
+
+    @Override
+    public void showLoader() {
+        mLoaderAnimator.start();
+        mBinding.loader.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoader() {
+        mBinding.loader.setVisibility(View.GONE);
+        mLoaderAnimator.cancel();
     }
 
     @Override
@@ -122,6 +141,7 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
         mBinding.error.setVisibility(View.VISIBLE);
         mBinding.empty.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.GONE);
+        hideLoader();
     }
 
     @Override
@@ -129,12 +149,13 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
         mBinding.error.setVisibility(View.GONE);
         mBinding.empty.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
+        hideLoader();
     }
 
     @Override
     public void onDialogFilled(String owner, String repo) {
         mOwner = owner;
-        mRepo =repo;
+        mRepo = repo;
         mPresenter.manageCall(mOwner, mRepo);
     }
 

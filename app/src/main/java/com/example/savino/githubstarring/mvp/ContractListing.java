@@ -19,6 +19,10 @@ public class ContractListing {
         void showResults();
 
         void startScrolling();
+
+        void showLoader();
+
+        void hideLoader();
     }
 
     public interface Presenter extends BasePresenter{
