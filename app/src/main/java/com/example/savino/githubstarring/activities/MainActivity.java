@@ -40,9 +40,11 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager supportFragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = supportFragmentManager.beginTransaction();
 
-        mFragment = ListingRepoFragment.newInstance();
-        fragmentTransaction.replace(R.id.container, mFragment);
-        fragmentTransaction.commit();
+        if (savedInstanceState == null) {
+            mFragment = ListingRepoFragment.newInstance();
+            fragmentTransaction.replace(R.id.container, mFragment);
+            fragmentTransaction.commit();
+        }
 
         mBinding.fab.setOnClickListener(new View.OnClickListener() {
             @Override

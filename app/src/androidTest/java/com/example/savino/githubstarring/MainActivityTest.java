@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 
 import java.util.ArrayList;
 
@@ -32,6 +31,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(AndroidJUnit4.class)
@@ -44,7 +44,7 @@ public class MainActivityTest {
 
     @Before
     public void setup() {
-        mApiManager = Mockito.mock(ApiManager.class);
+        mApiManager = mock(ApiManager.class);
 
         ListingRepoPresenterComponent component = DaggerListingRepoPresenterComponent.builder()
                 .apiModule(new ApiModule() {

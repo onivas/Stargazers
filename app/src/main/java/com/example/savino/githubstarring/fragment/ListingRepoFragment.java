@@ -1,6 +1,7 @@
 package com.example.savino.githubstarring.fragment;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,12 +22,17 @@ import com.example.savino.githubstarring.di.module.ListingRepoPresenterModule;
 import com.example.savino.githubstarring.model.Stargazers;
 import com.example.savino.githubstarring.mvp.ContractListing;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 
 
 public class ListingRepoFragment extends Fragment implements ContractListing.View,
         MainActivity.onDialogFilledListener,
         Adapter.onEndOfThePageListener {
+
+    public static final String LIST_STATE_KEY = "LIST_STATE";
+    public static final String LIST_RESULT_KEY = "LIST_RESULT";
 
     ListingRepoPresenter mPresenter;
     private RecyclerView mRecyclerView;
@@ -37,6 +43,9 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
     private String mOwner;
     private String mRepo;
     private ViewPropertyAnimator mLoaderAnimator;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private Parcelable mListState;
+    private ArrayList<Stargazers> mResult;
 
     public static ListingRepoFragment newInstance() {
         ListingRepoFragment fragment = new ListingRepoFragment();
@@ -70,8 +79,8 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mActivity);
-        mRecyclerView.setLayoutManager(layoutManager);
+        mLayoutManager = new LinearLayoutManager(mActivity);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         mLoaderAnimator = mBinding.loader.animate()
                 .rotation(1.0f)
@@ -81,10 +90,37 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(LIST_STATE_KEY, mLayoutManager.onSaveInstanceState());
+        outState.putParcelable(LIST_RESULT_KEY, Parcels.wrap(mAdapter.getData()));
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            mListState = savedInstanceState.getParcelable(LIST_STATE_KEY);
+            Parcelable result = savedInstanceState.getParcelable(LIST_RESULT_KEY);
+            mResult = Parcels.unwrap(result);
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
         mActivity.setListener(this);
+        restoreRecyclerView();
+    }
+
+    private void restoreRecyclerView() {
+        if (mListState != null) {
+            mLayoutManager.onRestoreInstanceState(mListState);
+            if (!mResult.isEmpty()) {
+                populateResult(mResult);
+            }
+        }
     }
 
     @Override
@@ -113,7 +149,6 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
         mBinding.error.setVisibility(View.GONE);
         mBinding.empty.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
-
         hideLoader();
     }
 

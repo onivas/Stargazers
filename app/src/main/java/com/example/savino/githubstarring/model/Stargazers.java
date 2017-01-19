@@ -5,7 +5,10 @@ import android.databinding.Bindable;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+import org.parceler.ParcelConstructor;
 
+@Parcel(Parcel.Serialization.BEAN)
 public class Stargazers extends BaseObservable{
 
     @SerializedName("id")
@@ -17,6 +20,7 @@ public class Stargazers extends BaseObservable{
     @SerializedName("avatar_url")
     String mAvatar;
 
+    @ParcelConstructor
     public Stargazers(String id, String login, String avatar) {
         mId = id;
         mLogin = login;

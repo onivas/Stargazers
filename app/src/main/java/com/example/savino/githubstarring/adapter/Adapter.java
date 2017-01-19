@@ -22,9 +22,9 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private final PublishSubject<String> onClickSubject = PublishSubject.create();
 
     private ArrayList<Stargazers> mData;
+
     private onEndOfThePageListener mListener;
     private boolean mIsScrolling = true;
-
     public Adapter(ArrayList<Stargazers> data, ListingRepoFragment fragment) {
         mData = data;
         mListener = fragment;
@@ -32,6 +32,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     public void setData(ArrayList<Stargazers> data) {
         mData = data;
+    }
+
+    public ArrayList<Stargazers> getData() {
+        return mData;
     }
 
     // load more
