@@ -31,7 +31,7 @@ public class OwnerRepoPresenter implements OwnerContract.Presenter{
                 .subscribe(new Action1<ArrayList<Repos>>() {
                     @Override
                     public void call(ArrayList<Repos> reposes) {
-                        mView.showResults(reposes.get(0));
+                        mView.showResults(reposes);
                     }
                 }, new Action1<Throwable>() {
                     @Override

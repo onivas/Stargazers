@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="com.example.savino.githubstarring.model.Repos"/>
+
+        <variable
+            name="repo"
+            type="Repos"/>
+    </data>
+
+
+    <RelativeLayout
+        android:id="@+id/activity_owner_repos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            android:id="@+id/language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:text="@{repo.language}"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name"
+            android:layout_marginTop="10dp"
+            android:text="@{repo.description}"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textSize="18sp"/>
+
+        <LinearLayout
+            android:id="@+id/detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/description"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/forks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_fork"
+                android:gravity="center"
+                android:text="@{Integer.toString(repo.forks)}"
+                />
+
+            <TextView
+                android:id="@+id/watchers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/ic_watcher"
+                android:gravity="center"
+                android:text="@{Integer.toString(repo.watchers)}"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/created_at"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detail"
+            android:layout_marginTop="10dp"
+            android:text="@{repo.createdAt.toString()}"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="@{repo.name}"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
+
+</layout>
