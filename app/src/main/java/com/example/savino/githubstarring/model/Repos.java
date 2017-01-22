@@ -17,8 +17,10 @@ public class Repos {
     @SerializedName("watchers")
     int mWatchers;
 
+    @SerializedName("language")
     String mLanguage;
 
+    @SerializedName("created_at")
     Date mCreatedAt;
 
     public Repos(String name, String description, int forks, int watchers, String language, Date createdAt) {
