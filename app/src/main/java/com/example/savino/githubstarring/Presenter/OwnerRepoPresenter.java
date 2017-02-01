@@ -3,10 +3,8 @@ package com.example.savino.githubstarring.Presenter;
 
 import android.util.Log;
 
-import com.example.savino.githubstarring.MyApplication;
-import com.example.savino.githubstarring.activities.OwnerReposActivity;
 import com.example.savino.githubstarring.api.ApiManager;
-import com.example.savino.githubstarring.di.component.OwnerRepoPresenterComponent;
+import com.example.savino.githubstarring.api.Manager;
 import com.example.savino.githubstarring.model.Repos;
 import com.example.savino.githubstarring.mvp.OwnerContract;
 
@@ -18,7 +16,7 @@ import rx.schedulers.Schedulers;
 
 public class OwnerRepoPresenter implements OwnerContract.Presenter{
 
-    OwnerReposActivity mView;
+    OwnerContract.View mView;
 
     private ApiManager mApiManager;
 
@@ -51,11 +49,10 @@ public class OwnerRepoPresenter implements OwnerContract.Presenter{
 
     @Override
     public void start() {
-        OwnerRepoPresenterComponent component = ((MyApplication) mView.getApplication()).getOwnerRepoPresenterComponent();
-        mApiManager = component.provideApiManager();
+        mApiManager = new Manager();
     }
 
-    public void setView(OwnerReposActivity activity) {
-        mView = activity;
+    public void setView(OwnerContract.View view) {
+        mView = view;
     }
 }

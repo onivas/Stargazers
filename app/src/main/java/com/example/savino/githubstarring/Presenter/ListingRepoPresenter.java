@@ -1,12 +1,9 @@
 package com.example.savino.githubstarring.Presenter;
 
-import android.content.Intent;
 import android.util.Log;
 
-import com.example.savino.githubstarring.MyApplication;
-import com.example.savino.githubstarring.activities.OwnerReposActivity;
 import com.example.savino.githubstarring.api.ApiManager;
-import com.example.savino.githubstarring.di.component.ListingRepoPresenterComponent;
+import com.example.savino.githubstarring.api.Manager;
 import com.example.savino.githubstarring.fragment.ListingRepoFragment;
 import com.example.savino.githubstarring.model.Stargazers;
 import com.example.savino.githubstarring.mvp.ContractListing;
@@ -23,7 +20,7 @@ import rx.subscriptions.CompositeSubscription;
 
 public class ListingRepoPresenter implements ContractListing.Presenter {
 
-    ListingRepoFragment mView;
+    ContractListing.View mView;
     private ApiManager mManager;
 
     private CompositeSubscription mSubscription = new CompositeSubscription();
@@ -37,10 +34,7 @@ public class ListingRepoPresenter implements ContractListing.Presenter {
 
     @Override
     public void start() {
-        ListingRepoPresenterComponent component = ((MyApplication) mView.getActivity().getApplication())
-                .getListingRepoPresenterComponent();
-
-        mManager = component.provideManager();
+        mManager = new Manager();
     }
 
     @Override
@@ -85,9 +79,7 @@ public class ListingRepoPresenter implements ContractListing.Presenter {
                 .subscribe(new Action1<String>() {
                     @Override
                     public void call(String owner) {
-                        Intent intent = new Intent(mView.getContext(), OwnerReposActivity.class);
-                        intent.putExtra(OwnerReposActivity.OWNER, owner);
-                        mView.startActivity(intent);
+                        mView.launchOwnerActivity(owner);
                     }
                 }, new Action1<Throwable>() {
                     @Override

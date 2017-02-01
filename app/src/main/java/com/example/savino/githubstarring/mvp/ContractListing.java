@@ -23,6 +23,8 @@ public class ContractListing {
         void showLoader();
 
         void hideLoader();
+
+        void launchOwnerActivity(String owner);
     }
 
     public interface Presenter extends BasePresenter{

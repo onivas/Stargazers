@@ -1,5 +1,6 @@
 package com.example.savino.githubstarring.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.view.ViewPropertyAnimator;
 import com.example.savino.githubstarring.Presenter.ListingRepoPresenter;
 import com.example.savino.githubstarring.R;
 import com.example.savino.githubstarring.activities.MainActivity;
+import com.example.savino.githubstarring.activities.OwnerReposActivity;
 import com.example.savino.githubstarring.adapter.Adapter;
 import com.example.savino.githubstarring.databinding.FragmentListingRepoBinding;
 import com.example.savino.githubstarring.di.component.DaggerListingRepoPresenterComponent;
@@ -167,6 +169,13 @@ public class ListingRepoFragment extends Fragment implements ContractListing.Vie
     public void hideLoader() {
         mBinding.loader.setVisibility(View.GONE);
         mLoaderAnimator.cancel();
+    }
+
+    @Override
+    public void launchOwnerActivity(String owner) {
+        Intent intent = new Intent(getContext(), OwnerReposActivity.class);
+        intent.putExtra(OwnerReposActivity.OWNER, owner);
+        startActivity(intent);
     }
 
     @Override
